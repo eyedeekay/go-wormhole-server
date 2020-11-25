@@ -3,6 +3,7 @@ module github.com/chris-pikul/go-wormhole-server
 go 1.12
 
 require (
+	github.com/Shyp/generate-tls-cert v0.0.0-20180217183001-cd913b339294 // indirect
 	github.com/chris-pikul/go-wormhole v0.0.0-20190730132648-892988be709e
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/cretz/bine v0.1.0

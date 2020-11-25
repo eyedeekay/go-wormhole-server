@@ -1,4 +1,6 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/Shyp/generate-tls-cert v0.0.0-20180217183001-cd913b339294 h1:fOiG++IZG2JD4aigPLz2TjKOg4FNEg3HrbhPoCkBS2c=
+github.com/Shyp/generate-tls-cert v0.0.0-20180217183001-cd913b339294/go.mod h1:yTfammXKX1AuKQjY4Kgo+Zoy7mRIAKx6HUa/SCtmNDg=
 github.com/chris-pikul/go-wormhole v0.0.0-20190730132648-892988be709e h1:j0MKOO8SGXPu9dKCKA4yMDoNmeAxp7vm21BRc6VneYc=
 github.com/chris-pikul/go-wormhole v0.0.0-20190730132648-892988be709e/go.mod h1:iewVKET3NxWjlVdOVwjtnWC52UN0bnbnkpsUlpcsbms=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d h1:U+s90UTSYgptZMwQh2aRr3LuazLJIa+Pg3Kc1ylSYVY=

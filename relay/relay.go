@@ -2,13 +2,14 @@ package relay
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"net/http"
 	"sync"
 	"time"
 
-  "github.com/eyedeekay/sam3/helper"
-//binetor  "github.com/cretz/bine/tor"
+	"github.com/eyedeekay/sam3/helper"
+	//binetor  "github.com/cretz/bine/tor"
 	"github.com/chris-pikul/go-wormhole-server/config"
 	"github.com/chris-pikul/go-wormhole-server/db"
 	"github.com/chris-pikul/go-wormhole-server/log"
@@ -19,7 +20,7 @@ var (
 	server  *http.Server
 	service *Service
 	i2p     string
-	tor string
+	tor     string
 
 	clients     map[*Client]struct{}
 	lockClients sync.Mutex
@@ -95,9 +96,14 @@ func Start() {
 		if i2p != "" {
 			listener, err := sam.I2PListener("wormhole-relay", i2p, "wormhole-relay")
 			if err != nil {
-				panic(err)
+				log.Err("Error opening I2P listener", err)
 			}
-			server.Serve(listener)
+			cert, err := tls.LoadX509KeyPair("wormhole-relay.crt", "wormhole-relay.key")
+			if err != nil {
+				log.Err("Error loading TLS certificate", err)
+			}
+			cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
+			server.Serve(tls.NewListener(listener, cfg))
 		} else if tor != "" {
 
 		} else {

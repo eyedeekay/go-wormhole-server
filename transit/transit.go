@@ -2,6 +2,7 @@ package transit
 
 import (
 	"context"
+	"crypto/tls"
 	"net"
 	"strconv"
 	"sync"
@@ -60,13 +61,19 @@ func Start() error {
 	if server != nil {
 		panic("attempted to start transit server while already running")
 	}
-
+	i2p = "127.0.0.1:7656"
 	var err error
 	if i2p != "" {
-		server, err = sam.I2PListener("wormhole-relay", i2p, "wormhole-relay")
+		l, err := sam.I2PListener("wormhole-transit", i2p, "wormhole-transit")
 		if err != nil {
 			return err
 		}
+		cert, err := tls.LoadX509KeyPair("wormhole-transit.crt", "wormhole-transit.key")
+		if err != nil {
+			log.Err("Error loading TLS certificate", err)
+		}
+		cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
+		server = tls.NewListener(l, cfg)
 	} else if tor != "" {
 
 	} else {
