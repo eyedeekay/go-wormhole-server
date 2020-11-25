@@ -20,6 +20,9 @@ type RelayOptions struct {
 	//Port number for the server to listen on
 	Port uint `json:"port"`
 
+	//I2P SAM address for running a hidden service
+	I2P string `json:i2p`
+
 	//WelcomeMOTD set's the welcome message to be displayed on connecting
 	//clients
 	WelcomeMOTD string `json:"welcomeMOTD"`
@@ -61,6 +64,9 @@ type TransitOptions struct {
 
 	//Port number for the server to listen on
 	Port uint `json:"port"`
+
+	//I2P SAM address for running a hidden service
+	I2P string `json:i2p`
 }
 
 const (
@@ -107,6 +113,7 @@ var DefaultOptions = Options{
 		Host:              "",
 		Port:              4000,
 		DBFile:            "./wormhole-relay.db",
+		I2P:               "",
 		AllowList:         true,
 		CleaningInterval:  5,
 		ChannelExpiration: 11,
@@ -236,8 +243,10 @@ func applyCLIOptions(c *cli.Context, opts *Options) {
 
 	opts.Relay.Host = c.String("relay-host")
 	opts.Relay.Port = c.Uint("relay-port")
+	opts.Relay.I2P = c.String("i2p")
 	opts.Transit.Host = c.String("transit-host")
 	opts.Transit.Port = c.Uint("transit-port")
+	opts.Transit.I2P = c.String("i2p")
 
 	opts.Relay.DBFile = c.String("db")
 
@@ -264,6 +273,6 @@ func applyCLIOptions(c *cli.Context, opts *Options) {
 	if str := c.String("log-level"); str != "" {
 		opts.Logging.Level = str
 	}
-	
+
 	opts.Logging.BlurTimes = c.Uint("log-blur")
 }

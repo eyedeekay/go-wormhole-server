@@ -72,7 +72,7 @@ func CreateSchema() error {
 	}
 
 	log.Info("setting up database schema")
-	
+
 	_, err := db.Exec(relaySchema)
 	if err != nil {
 		return err

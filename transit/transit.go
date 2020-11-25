@@ -8,11 +8,14 @@ import (
 
 	"github.com/chris-pikul/go-wormhole-server/config"
 	"github.com/chris-pikul/go-wormhole-server/log"
+	"github.com/eyedeekay/sam3/helper"
 )
 
 var (
 	addr   string
 	server net.Listener
+	i2p    string
+	tor    string
 
 	lock    sync.Mutex
 	pending map[string][]transitConn
@@ -59,9 +62,18 @@ func Start() error {
 	}
 
 	var err error
-	server, err = net.Listen("tcp", addr)
-	if err != nil {
-		return err
+	if i2p != "" {
+		server, err = sam.I2PListener("wormhole-relay", i2p, "wormhole-relay")
+		if err != nil {
+			return err
+		}
+	} else if tor != "" {
+
+	} else {
+		server, err = net.Listen("tcp", addr)
+		if err != nil {
+			return err
+		}
 	}
 
 	go runTransit()

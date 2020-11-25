@@ -192,7 +192,7 @@ func (c *Client) processToken(token, side string) {
 	}
 
 	pending[token] = []transitConn{
-		transitConn{
+		{
 			Side:   side,
 			Client: c,
 		},

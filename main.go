@@ -49,7 +49,7 @@ func main() {
 	app.HelpName = "wormhole-server"
 	app.Version = Version
 	app.Authors = []cli.Author{
-		cli.Author{
+		{
 			Name:  "Chris Pikul",
 			Email: "chris-pikul@gmail.com",
 		},
@@ -64,6 +64,11 @@ func main() {
 		cli.StringFlag{
 			Name:  "config, c",
 			Usage: "configuration JSON `FILE` to use instead of options (empty = no config)",
+		},
+
+		cli.StringFlag{
+			Name:  "i2p, i",
+			Usage: "`HOST:PORT` address of the i2p SAM API for setting up a hidden service",
 		},
 
 		cli.StringFlag{
@@ -131,14 +136,14 @@ func main() {
 	}
 
 	app.Commands = []cli.Command{
-		cli.Command{
+		{
 			Name:   "serve",
 			Usage:  "serve both relay, and transit requests (default command)",
 			Action: runServer,
 			Flags:  app.Flags,
 		},
 
-		cli.Command{
+		{
 			Name:   "clean",
 			Usage:  "clears the SQLite database file",
 			Action: runClean,
@@ -165,7 +170,7 @@ func main() {
 			},
 		},
 
-		cli.Command{
+		{
 			Name:   "relay",
 			Usage:  "run as relay server (rendezvous) only",
 			Action: runRelay,
@@ -173,6 +178,11 @@ func main() {
 				cli.StringFlag{
 					Name:  "config, c",
 					Usage: "configuration JSON `FILE` to use instead of options (empty = no config)",
+				},
+
+				cli.StringFlag{
+					Name:  "i2p, i",
+					Usage: "`HOST:PORT` address of the i2p SAM API for setting up a hidden service",
 				},
 
 				cli.StringFlag{
@@ -230,7 +240,7 @@ func main() {
 			},
 		},
 
-		cli.Command{
+		{
 			Name:   "transit",
 			Usage:  "run as transit server (piping) only",
 			Action: runTransit,
@@ -248,6 +258,11 @@ func main() {
 					Name:  "transit-port",
 					Usage: "`PORT` number to listen on",
 					Value: 4001,
+				},
+
+				cli.StringFlag{
+					Name:  "i2p, i",
+					Usage: "`HOST:PORT` address of the i2p SAM API for setting up a hidden service",
 				},
 
 				cli.StringFlag{

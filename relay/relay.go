@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+  "github.com/eyedeekay/sam3/helper"
+//binetor  "github.com/cretz/bine/tor"
 	"github.com/chris-pikul/go-wormhole-server/config"
 	"github.com/chris-pikul/go-wormhole-server/db"
 	"github.com/chris-pikul/go-wormhole-server/log"
@@ -16,6 +18,8 @@ var (
 	router  *http.ServeMux
 	server  *http.Server
 	service *Service
+	i2p     string
+	tor string
 
 	clients     map[*Client]struct{}
 	lockClients sync.Mutex
@@ -87,9 +91,20 @@ func Start() {
 
 	go func() {
 		log.Info("starting relay server")
-		err := server.ListenAndServe()
-		if err != nil && err != http.ErrServerClosed {
-			log.Err("closing relay server encountered an error", err)
+		i2p = "127.0.0.1:7656"
+		if i2p != "" {
+			listener, err := sam.I2PListener("wormhole-relay", i2p, "wormhole-relay")
+			if err != nil {
+				panic(err)
+			}
+			server.Serve(listener)
+		} else if tor != "" {
+
+		} else {
+			err := server.ListenAndServe()
+			if err != nil && err != http.ErrServerClosed {
+				log.Err("closing relay server encountered an error", err)
+			}
 		}
 		log.Info("relay server closed")
 	}()
