@@ -54,7 +54,6 @@ func main() {
 			Email: "chris-pikul@gmail.com",
 		},
 	}
-
 	//NOTE: Major, no real way to tell if these are CLI defaults,
 	//or DefaultServerOptions defaults, so because of the build order
 	//of options the CLI just dictates the final object irregardless

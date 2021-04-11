@@ -10,6 +10,7 @@ import (
 	"github.com/chris-pikul/go-wormhole-server/config"
 	"github.com/chris-pikul/go-wormhole-server/log"
 	"github.com/eyedeekay/sam3/helper"
+	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 var (
@@ -68,7 +69,11 @@ func Start() error {
 		if err != nil {
 			return err
 		}
-		cert, err := tls.LoadX509KeyPair("wormhole-transit.crt", "wormhole-transit.key")
+		err = config.CreateTLSCertificate(l.Addr().(i2pkeys.I2PAddr).Base32())
+		if err != nil {
+			log.Err("Error creating self-signed cert", err)
+		}
+		cert, err := tls.LoadX509KeyPair(l.Addr().(i2pkeys.I2PAddr).Base32()+".crt", l.Addr().(i2pkeys.I2PAddr).Base32()+".pem")
 		if err != nil {
 			log.Err("Error loading TLS certificate", err)
 		}

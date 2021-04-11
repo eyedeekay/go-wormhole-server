@@ -13,6 +13,7 @@ import (
 	"github.com/chris-pikul/go-wormhole-server/config"
 	"github.com/chris-pikul/go-wormhole-server/db"
 	"github.com/chris-pikul/go-wormhole-server/log"
+	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 var (
@@ -98,12 +99,19 @@ func Start() {
 			if err != nil {
 				log.Err("Error opening I2P listener", err)
 			}
-			cert, err := tls.LoadX509KeyPair("wormhole-relay.crt", "wormhole-relay.key")
+			err = config.CreateTLSCertificate(listener.Addr().(i2pkeys.I2PAddr).Base32())
+			if err != nil {
+				log.Err("Error creating self-signed cert", err)
+			}
+			cert, err := tls.LoadX509KeyPair(listener.Addr().(i2pkeys.I2PAddr).Base32()+".crt", listener.Addr().(i2pkeys.I2PAddr).Base32()+".pem")
 			if err != nil {
 				log.Err("Error loading TLS certificate", err)
 			}
 			cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
-			server.Serve(tls.NewListener(listener, cfg))
+			err = server.Serve(tls.NewListener(listener, cfg))
+			if err != nil {
+				log.Err("Error serving the relay", err)
+			}
 		} else if tor != "" {
 
 		} else {
